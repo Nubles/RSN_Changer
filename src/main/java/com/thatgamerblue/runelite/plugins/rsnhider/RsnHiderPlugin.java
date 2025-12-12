@@ -33,6 +33,7 @@ import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.widgets.Widget;
+import java.awt.image.BufferedImage;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -40,6 +41,9 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import java.util.Random;
 
@@ -67,6 +71,15 @@ public class RsnHiderPlugin extends Plugin
 	@Inject
 	private RsnHiderConfig config;
 
+	@Inject
+	private ClientToolbar clientToolbar;
+
+	@Inject
+	private ConfigManager configManager;
+
+	private RsnHiderPanel panel;
+	private NavigationButton navButton;
+
 	private static String fakeRsn;
 
 	private static final String ALPHA_NUMERIC_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -82,12 +95,24 @@ public static String[] NAMES = {"immygpimp", "pistcuettyple", "edi wator", "Doe1
 	public void startUp()
 	{
 		updateRsn();
+		panel = new RsnHiderPanel(config, configManager);
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
+
+		navButton = NavigationButton.builder()
+			.tooltip("RSN Hider")
+			.icon(icon)
+			.priority(10)
+			.panel(panel)
+			.build();
+
+		clientToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	public void shutDown()
 	{
 		clientThread.invokeLater(() -> client.runScript(ScriptID.CHAT_PROMPT_INIT));
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -96,6 +121,7 @@ public static String[] NAMES = {"immygpimp", "pistcuettyple", "edi wator", "Doe1
 		if (event.getGroup().equals("rsnhider"))
 		{
 			updateRsn();
+			panel.updateTextField();
 		}
 	}
 
