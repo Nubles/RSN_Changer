@@ -96,7 +96,15 @@ public static String[] NAMES = {"immygpimp", "pistcuettyple", "edi wator", "Doe1
 	{
 		updateRsn();
 		panel = new RsnHiderPanel(config, configManager);
-		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
+		BufferedImage icon = null;
+		try
+		{
+			icon = ImageUtil.loadImageResource(getClass(), "icon.png");
+		}
+		catch (Exception e)
+		{
+			// ignore
+		}
 
 		if (icon != null)
 		{
@@ -115,7 +123,10 @@ public static String[] NAMES = {"immygpimp", "pistcuettyple", "edi wator", "Doe1
 	public void shutDown()
 	{
 		clientThread.invokeLater(() -> client.runScript(ScriptID.CHAT_PROMPT_INIT));
-		clientToolbar.removeNavigation(navButton);
+		if (navButton != null)
+		{
+			clientToolbar.removeNavigation(navButton);
+		}
 	}
 
 	@Subscribe
