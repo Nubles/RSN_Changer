@@ -52,9 +52,9 @@ Peace to:
 */
 @PluginDescriptor(
 	name = "RSN Hider",
-	description = "Hides your rsn for streamers.",
-	tags = {"twitch"},
-	enabledByDefault = false
+	description = "Hides your rsn for streamers. Acts as a RSN name changer.",
+	tags = {"twitch", "name", "changer", "rsn"},
+	enabledByDefault = true
 )
 public class RsnHiderPlugin extends Plugin
 {
