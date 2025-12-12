@@ -32,3 +32,9 @@ sourceCompatibility = '1.8'
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
+
+task runPlugin(type: JavaExec) {
+	classpath = sourceSets.test.runtimeClasspath
+	main = 'com.thatgamerblue.runelite.plugins.rsnhider.PluginRunner'
+	enableAssertions = true
+}
