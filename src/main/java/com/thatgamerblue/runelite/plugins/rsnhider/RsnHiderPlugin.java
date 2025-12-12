@@ -98,14 +98,17 @@ public static String[] NAMES = {"immygpimp", "pistcuettyple", "edi wator", "Doe1
 		panel = new RsnHiderPanel(config, configManager);
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
 
-		navButton = NavigationButton.builder()
-			.tooltip("RSN Hider")
-			.icon(icon)
-			.priority(10)
-			.panel(panel)
-			.build();
+		if (icon != null)
+		{
+			navButton = NavigationButton.builder()
+				.tooltip("RSN Hider")
+				.icon(icon)
+				.priority(10)
+				.panel(panel)
+				.build();
 
-		clientToolbar.addNavigation(navButton);
+			clientToolbar.addNavigation(navButton);
+		}
 	}
 
 	@Override
